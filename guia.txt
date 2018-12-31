@@ -1,0 +1,12 @@
+Guia
+1.Crear autenticacion: php artisan make:auth
+2.Crear BD y cambiar datos de conexion.
+3.Ejecutar migration: php artisan migrate:refresh --seed
+4.Registrarse para probar la autenticacion.
+5.Tener instalado NodeJS en el equipo.
+6.Instalar las dependencias de js (https://laravel.com/docs/5.7/mix) segun el package.json para trabajar con Vue.js, ejecutando: npm install
+7.Activar Laravel Mix (webpack.mix.js) para compilar el js y css y mostrar errores en vivo: npm run watch-poll
+8.Modificar vista home
+9.Renombrar el component de ejemplo /resources/js/components/, y cambiarlo en resources/js/app.js tambien.
+10.Agregar contenido escrito en el home al componente editado.
+11.Agrega el componente del formulario.
