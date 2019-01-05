@@ -20,15 +20,15 @@
     export default {
         data(){
             return{
-                pensamientos:[{
-                    'id':1,
-                    'descripcion':'alguna descripción',
-                    'created_at':'29/12/2018'
-                }]
+                pensamientos:[]
             }
         },
         mounted() {
             console.log('Component MiPensamiento mounted.')
+            axios.get('/pensamiento')
+                    .then((r)=>{
+                        this.pensamientos = r.data;
+                    })
         },
         methods:{
             addPensamiento(d){

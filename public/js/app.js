@@ -47365,15 +47365,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            pensamientos: [{
-                'id': 1,
-                'descripcion': 'alguna descripción',
-                'created_at': '29/12/2018'
-            }]
+            pensamientos: []
         };
     },
     mounted: function mounted() {
+        var _this = this;
+
         console.log('Component MiPensamiento mounted.');
+        axios.get('/pensamiento').then(function (r) {
+            _this.pensamientos = r.data;
+        });
     },
 
     methods: {
@@ -47518,13 +47519,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         createPensamiento: function createPensamiento() {
+            var _this = this;
+
             //alert(this.iDescripcion);
+
             var d = {
-                'id': this.i++,
-                'descripcion': this.iDescripcion,
-                'created_at': '30/12/2018'
+                descripcion: this.iDescripcion
             };
-            this.$emit('newPensamiento', d);
+
+            axios.post('/pensamiento', d).then(function (r) {
+                console.log(r);
+                _this.$emit('newPensamiento', r.data);
+            });
+
+            /*let d = {
+                'id':this.i++,
+                'descripcion':this.iDescripcion,
+                'created_at':'30/12/2018'
+            }
+            this.$emit('newPensamiento',d);*/
+
+            //Limpiar el input descripcion
             this.iDescripcion = '';
         }
     }
@@ -47688,14 +47703,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         deleteP: function deleteP() {
-            this.$emit('delete');
+            var _this = this;
+
+            axios.delete('/pensamiento/' + this.pensamiento.id).then(function () {
+                _this.$emit('delete');
+            });
         },
         editP: function editP() {
             this.editMode = true;
         },
         updateP: function updateP() {
-            this.editMode = false;
-            this.$emit('update', this.pensamiento);
+            var _this2 = this;
+
+            var d = {
+                descripcion: this.pensamiento.descripcion
+            };
+            axios.put('/pensamiento/' + this.pensamiento.id, d).then(function (r) {
+                _this2.editMode = false;
+                _this2.$emit('update', r.data);
+            });
+            //this.$emit('update',this.pensamiento);
         }
     }
 });
@@ -47710,7 +47737,12 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "card mt-4" }, [
     _c("div", { staticClass: "card-header" }, [
-      _vm._v("Publicado en " + _vm._s(_vm.pensamiento.created_at))
+      _vm._v(
+        "Publicado en " +
+          _vm._s(_vm.pensamiento.created_at) +
+          " - Última actualización " +
+          _vm._s(_vm.pensamiento.updated_at)
+      )
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "card-body" }, [

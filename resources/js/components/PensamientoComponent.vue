@@ -1,6 +1,6 @@
 <template>
     <div class="card mt-4">
-        <div class="card-header">Publicado en {{pensamiento.created_at}}</div>
+        <div class="card-header">Publicado en {{pensamiento.created_at}} - Última actualización {{pensamiento.updated_at}}</div>
 
         <div class="card-body">
             <input v-if="editMode" type="text" class="form-control" v-model="pensamiento.descripcion">
@@ -28,14 +28,24 @@
         },
         methods:{
             deleteP(){
-                this.$emit('delete');
+                 axios.delete('/pensamiento/'+this.pensamiento.id)
+                        .then(()=>{
+                            this.$emit('delete');
+                        });                
             },
             editP(){
                 this.editMode = true;
             },
             updateP(){
-                this.editMode = false;
-                this.$emit('update',this.pensamiento);
+                const d = {
+                    descripcion:this.pensamiento.descripcion
+                }
+                axios.put('/pensamiento/'+this.pensamiento.id,d)
+                        .then((r)=>{
+                            this.editMode = false;                            
+                            this.$emit('update',r.data);
+                        });
+                //this.$emit('update',this.pensamiento);
             }
         }
     }

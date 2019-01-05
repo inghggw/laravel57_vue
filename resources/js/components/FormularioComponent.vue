@@ -28,12 +28,25 @@
         methods:{
             createPensamiento(){
                 //alert(this.iDescripcion);
-                let d = {
+                
+                const d = {
+                    descripcion:this.iDescripcion
+                }
+                
+                axios.post('/pensamiento',d)
+                      .then((r)=>{
+                            console.log(r);
+                            this.$emit('newPensamiento',r.data);
+                      });
+                
+                /*let d = {
                     'id':this.i++,
                     'descripcion':this.iDescripcion,
                     'created_at':'30/12/2018'
                 }
-                this.$emit('newPensamiento',d);
+                this.$emit('newPensamiento',d);*/
+                
+                //Limpiar el input descripcion
                 this.iDescripcion = '';
             }
         }
